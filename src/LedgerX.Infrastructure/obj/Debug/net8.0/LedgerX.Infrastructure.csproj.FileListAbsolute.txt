@@ -1,0 +1,15 @@
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.AssemblyInfo.cs
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\bin\Debug\net8.0\LedgerX.Infrastructure.deps.json
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\bin\Debug\net8.0\LedgerX.Infrastructure.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\bin\Debug\net8.0\LedgerX.Infrastructure.pdb
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\bin\Debug\net8.0\LedgerX.Core.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\bin\Debug\net8.0\LedgerX.Core.pdb
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX..ED817F5D.Up2Date
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\refint\LedgerX.Infrastructure.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\LedgerX.Infrastructure.pdb
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Infrastructure\obj\Debug\net8.0\ref\LedgerX.Infrastructure.dll

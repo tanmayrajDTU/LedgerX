@@ -1,0 +1,11 @@
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\bin\Debug\net8.0\LedgerX.Core.deps.json
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\bin\Debug\net8.0\LedgerX.Core.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\bin\Debug\net8.0\LedgerX.Core.pdb
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.AssemblyInfoInputs.cache
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.AssemblyInfo.cs
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.csproj.CoreCompileInputs.cache
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\refint\LedgerX.Core.dll
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\LedgerX.Core.pdb
+C:\Users\Tanmay\Desktop\WealthPulse\src\LedgerX.Core\obj\Debug\net8.0\ref\LedgerX.Core.dll

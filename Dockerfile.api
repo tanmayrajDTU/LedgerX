@@ -1,0 +1,26 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+
+# Copy solution and project files
+COPY LedgerX.sln .
+COPY src/LedgerX.Core/LedgerX.Core.csproj src/LedgerX.Core/
+COPY src/LedgerX.Infrastructure/LedgerX.Infrastructure.csproj src/LedgerX.Infrastructure/
+COPY src/LedgerX.API/LedgerX.API.csproj src/LedgerX.API/
+COPY src/LedgerX.Workers/LedgerX.Workers.csproj src/LedgerX.Workers/
+
+# Restore dependencies
+RUN dotnet restore
+
+# Copy all source files
+COPY src/ src/
+
+# Build and publish API
+RUN dotnet publish src/LedgerX.API/LedgerX.API.csproj -c Release -o /out
+
+# Build final runtime container
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /out .
+EXPOSE 5000
+ENV ASPNETCORE_URLS=http://+:5000
+ENTRYPOINT ["dotnet", "LedgerX.API.dll"]
