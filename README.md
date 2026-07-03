@@ -36,6 +36,159 @@ graph TD
 
 ---
 
+## 📂 Codebase Directory Structure
+
+The project is structured according to clean architecture guidelines to isolate business logic from database, caching, messaging, and API concerns:
+
+```text
+WealthPulse/
+├── src/
+│   ├── LedgerX.Core/                     # Pure domain logic (no external dependencies)
+│   │   ├── Entities/                     # Database domain models
+│   │   │   ├── User.cs                   # User account info and role mappings
+│   │   │   ├── Holding.cs                # Portfolios holding entries (Stock, Mutual Fund, FD, etc.)
+│   │   │   ├── Transaction.cs            # Ledger audit log entries (Buys, Sells, Deposits)
+│   │   │   ├── Alert.cs                  # Risk monitors (Price limits, Drift, Concentration)
+│   │   │   ├── Job.cs                    # Background tasks scheduled for RabbitMQ execution
+│   │   │   └── JobExecution.cs           # Tracks worker execution logs, times, and errors
+│   │   └── Interfaces/                   # Abstractions implemented by Infrastructure
+│   │       ├── ICacheService.cs          # Redis cache access protocols
+│   │       ├── IMessageBroker.cs         # RabbitMQ publishing client
+│   │       ├── IMarketDataProvider.cs    # Pluggable price checker (Mock vs. Yahoo Live)
+│   │       └── IJobTracker.cs            # Helper to manage worker execution logs
+│   │
+│   ├── LedgerX.Infrastructure/           # Core implementation layer
+│   │   ├── Data/                         # EF Core database context
+│   │   │   ├── LedgerXDbContext.cs       # PostgreSQL DB schema configuration
+│   │   │   └── DbSeeder.cs               # Seeds DB with Indian stock market assets
+│   │   ├── Caching/                      # Distributed caching layer
+│   │   │   └── RedisCacheService.cs      # Redis client wrapper
+│   │   ├── Messaging/                    # Distributed messaging implementation
+│   │   │   └── RabbitMQMessageBroker.cs  # Creates Exchanges, DLQs, and queues
+│   │   └── Services/                     # Business services
+│   │       ├── MarketDataProvider.cs     # Queries Yahoo Finance API or simulated feeds
+│   │       ├── TransactionService.cs     # Processes ledger trades & validates whole-shares
+│   │       └── PipelineJobScheduler.cs   # Spawns nightly background update tasks
+│   │
+│   ├── LedgerX.API/                      # Web API presentation layer
+│   │   ├── Controllers/                  # API Endpoint controllers
+│   │   │   ├── AuthController.cs         # Handles JWT token logins and user validation
+│   │   │   ├── SearchController.cs       # Autocomplete proxy queries Yahoo search endpoint
+│   │   │   ├── HoldingsController.cs     # Handles portfolio registrations and price seeding
+│   │   │   ├── TransactionsController.cs # Submits buy/sell transaction items
+│   │   │   └── AdminController.cs        # Updates settings in Redis and monitors worker queues
+│   │   └── Program.cs                    # Web application startup configuration
+│   │
+│   └── LedgerX.Workers/                  # Background worker hosted services
+│       ├── Workers/                      # Consumer implementations
+│       │   ├── MarketDataWorker.cs       # Pulls and caches current stock market prices
+│       │   ├── AnalyticsWorker.cs        # Recalculates volatility & concentration risks
+│       │   ├── AlertWorker.cs            # Evaluates watch rules & flags warning logs
+│       │   ├── SchedulerService.cs       # Trigger worker cron pipelines (5:00 PM IST)
+│       │   └── SchedulerTriggerWorker.cs # Processes manual admin scheduler triggers
+│       └── Program.cs                    # Configures DI and Prometheus metrics endpoints
+│
+└── src/ledgerx-ui/                       # React frontend SPA (Vite + TypeScript)
+    └── src/
+        ├── pages/                        # Interface views
+        │   ├── Login.tsx                 # Secure authentication screen
+        │   ├── Dashboard.tsx             # Net Worth charts, Volatility, and upcoming FDs
+        │   ├── Holdings.tsx              # Portfolio table & search autocomplete form drawer
+        │   ├── Transactions.tsx          # Ledger logging view and trade forms
+        │   ├── Alerts.tsx                # Risk parameters config and warnings panel
+        │   └── Admin.tsx                 # Live database stats & distributed switchboard
+        └── services/
+            └── api.ts                    # Axios client instance with JWT token interceptors
+```
+
+---
+
+## 🗄️ Database Schema Layout
+
+The relational database schema is configured in PostgreSQL under the following layout:
+
+```mermaid
+erDiagram
+    Users {
+        Guid Id PK
+        string Username
+        string Email
+        string PasswordHash
+        string Role
+    }
+    Holdings {
+        Guid Id PK
+        Guid UserId FK
+        string AssetType
+        string SymbolOrName
+        decimal QuantityOrUnits
+        decimal BuyPriceOrNAV
+        decimal Principal
+        decimal InterestRate
+        DateTime StartDate
+        DateTime MaturityDate
+        decimal Balance
+    }
+    Transactions {
+        Guid Id PK
+        Guid HoldingId FK
+        Guid UserId FK
+        string TransactionType
+        decimal Amount
+        decimal QuantityOrUnits
+        decimal PriceOrNAV
+        DateTime TransactionDate
+    }
+    PriceHistory {
+        Guid Id PK
+        string SymbolOrName
+        string AssetType
+        decimal Price
+        DateTime PriceDate
+    }
+    Alerts {
+        Guid Id PK
+        Guid UserId FK
+        Guid HoldingId FK
+        string AlertType
+        decimal ThresholdValue
+        decimal CurrentValue
+        string Message
+        bool IsTriggered
+        DateTime TriggeredAt
+    }
+
+    Users ||--o{ Holdings : owns
+    Holdings ||--o{ Transactions : audits
+    Users ||--o{ Transactions : triggers
+    Users ||--o{ Alerts : configures
+    Holdings ||--o{ Alerts : monitors
+```
+
+---
+
+## 🔌 API Endpoint Reference
+
+The ASP.NET Core API exposes the following endpoints (protected by JWT token auth):
+
+| Method | Endpoint | Description | Auth Required |
+|:---|:---|:---|:---|
+| **POST** | `/api/auth/login` | Returns JWT token for credentials. | No |
+| **GET** | `/api/search?q={query}` | Autocomplete search proxying Yahoo Finance. | Yes |
+| **GET** | `/api/holdings` | Retrieves user's portfolios holdings (cached). | Yes |
+| **POST** | `/api/holdings` | Registers a new asset holding (clears cache). | Yes |
+| **GET** | `/api/transactions` | Retrieves historical transaction audit logs. | Yes |
+| **POST** | `/api/transactions` | Records a new trade or FD ledger entry. | Yes |
+| **GET** | `/api/alerts` | Retrieves risk configurations and warnings. | Yes |
+| **POST** | `/api/alerts` | Registers a new price limit or concentration alert. | Yes |
+| **POST** | `/api/alerts/{id}/dismiss` | Clears a triggered risk alert. | Yes |
+| **GET** | `/api/admin/config` | Retrieves the live data & fault configurations. | Yes (Admin) |
+| **POST** | `/api/admin/config` | Updates cache configurations in Redis. | Yes (Admin) |
+| **GET** | `/api/admin/jobs` | Retrieves task statuses and executions log. | Yes (Admin) |
+| **POST** | `/api/admin/scheduler/trigger` | Manually triggers the nightly pipeline jobs. | Yes (Admin) |
+
+---
+
 ## 🛠️ Prerequisites
 
 Before setting up the project, make sure you have the following installed:
