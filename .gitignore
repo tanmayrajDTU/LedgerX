@@ -1,0 +1,57 @@
+# ==========================================
+# C# / .NET Build Artifacts
+# ==========================================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+
+# ==========================================
+# Node.js / React Frontend Build & Cache
+# ==========================================
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# ==========================================
+# Operating System & IDE Specific
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.targets
+
+# ==========================================
+# Databases & Container Local Volumes
+# ==========================================
+pgdata/
+rabbitmq_data/
+redis_data/
+docker-compose.override.yml
+
+# ==========================================
+# AI Agent Caches & Configuration
+# ==========================================
+.agents/
+.gemini/
