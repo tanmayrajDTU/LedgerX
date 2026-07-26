@@ -1,4 +1,4 @@
-# 💼 WealthPulse (LedgerX) — Wealth Management Platform
+# 💼 LedgerX — Wealth Management Platform
 
 WealthPulse is a premium, real-time distributed portfolio tracking and wealth management system customized for the **Indian Stock Market (INR / ₹)**. It aggregates stocks, ETFs, Mutual Funds, Fixed Deposits, and Savings Accounts to compile a consolidated net worth, analyze asset concentration, calculate annualized volatility, and track compound returns.
 
